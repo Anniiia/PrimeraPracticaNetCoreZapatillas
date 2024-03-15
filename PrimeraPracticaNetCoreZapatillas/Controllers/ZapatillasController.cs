@@ -92,5 +92,18 @@ namespace PrimeraPracticaNetCoreZapatillas.Controllers
             List<Zapatilla> zapatillas = await this.repo.GetZapatillasAsync();
             return View(zapatillas);
         }
+
+        [HttpPost]
+
+        public async Task<IActionResult> NuevasImagenes(string zapatilla,List<string> imagen)
+        {
+            List<string> imagenes = imagen;
+            int idZapatilla = int.Parse(zapatilla);
+            List<Zapatilla> zapatillas = await this.repo.GetZapatillasAsync();
+
+            await this.repo.InsertImagenesAsync(idZapatilla, imagenes);
+            ViewData["MENSAJES"] = "Imagnees insertadas correctamente";
+            return View(zapatillas);
+        }
     }
 }

@@ -3,22 +3,28 @@
 
     <h1>Nuevas Imagenes Zapatillas</h1>
 
-    <button id="add" class="btn btn-warning">
+<h3>@ViewData["MENSAJES"]</h3>
+
+    <button  class="btn btn-warning" onclick="addInput()">
         Añadir nuevo campo Jquery
-    </button>
+   </button>
+
+   <hr/>
 
     <form method="post" id="formulario">
-        <select class="form-control">
+
+    <button class="btn btn-info">
+        Añadir imagenes POST
+    </button>
+    <select class="form-control" name="zapatilla">
             @foreach (Zapatilla zapa in Model)
         {
-            <option name="zapatilla" value="@zapa.IdProducto">@zapa.Nombre</option>
+            <option  value="@zapa.IdProducto">@zapa.Nombre</option>
         }
         </select>
 
         <input type="text" name="imagen" class="form-control" />
-        <button class="btn btn-info">
-            Añadir imagenes POST
-        </button>
+        
 
     </form>
 
@@ -27,12 +33,10 @@
     <script>
         function addInput() {
             $(function () {
-                $("#add").click(function () {
-                    var nuevoinput = $('<input type="text" name="imagen"  class="form-control"/>')
-                });
-                $("#formulario").append(nuevoinput)
-            }
-                }
+                var nuevoinput = $('<input type="text" name="imagen" class="form-control"/>');
+                $("#formulario").append(nuevoinput);
+            });
+        }
+                
     </script>
 }
-

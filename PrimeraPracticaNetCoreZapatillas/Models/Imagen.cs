@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PrimeraPracticaNetCoreZapatillas.Models
 {
-    [Table("IMAGENZAPASPRACTICA")]
+    [Table("IMAGENESZAPASPRACTICA")]
     public class Imagen
     {
         [Key]

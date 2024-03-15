@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PrimeraPracticaNetCoreZapatillas.Data;
 using PrimeraPracticaNetCoreZapatillas.Models;
 using System.Data;
+using static Azure.Core.HttpHeader;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #region PROCEEDIMIENTOS ALMACENADOS
 //create procedure SP_ZAPATILLAS_OUT
@@ -70,6 +72,24 @@ namespace PrimeraPracticaNetCoreZapatillas.Repositories
                 ImagenZap = imagen
                 
             };
+        }
+
+        public async Task InsertImagenesAsync(int zapatilla, List<string> imagen)
+        {
+            int maxId = this.context.Imagenes.Max(e => e.IdImagen) + 1;
+            List<string> imagenes = imagen;
+
+            for(int i = 0; i<imagenes.Count(); i++)
+            {
+                Imagen imageninsert = new Imagen();
+                
+                imageninsert.IdImagen = maxId+i;
+                imageninsert.IdProducto = zapatilla;
+                imageninsert.ImagenZapa = imagenes[i];
+                this.context.Imagenes.Add(imageninsert);
+            }
+            this.context.SaveChanges();
+
         }
 
     }
