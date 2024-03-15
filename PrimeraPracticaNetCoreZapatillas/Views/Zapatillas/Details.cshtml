@@ -1,4 +1,10 @@
-﻿@model PrimeraPracticaNetCoreZapatillas.Models.Zapatilla
+﻿@model Imagen 
+
+@{
+    Zapatilla zapatilla =
+            ViewData["ZAPATILLASELECCIONADA"] as Zapatilla;
+}
+
 
 @{
     ViewData["Title"] = "Detaills";
@@ -6,27 +12,30 @@
 
 <h1>Detaills</h1>
 
-<div>
-    <h4>Zapatilla</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-    </dl>
-</div>
+<ul class="list-group">
+    <li class="list-group-item list-group-item-danger">
+        Nombre :: @zapatilla.Nombre
+    </li>
+    <li class="list-group-item list-group-item-info">
+        Descripcion: @zapatilla.Descripcion
+    </li>
+    <li class="list-group-item list-group-item-info">
+        Precio: @zapatilla.Precio
+    </li>
+</ul>
+
+
+<div id="contenido" style="background-color: lightgreen"></div>
+
+@section Scripts {
+    <script>
+        function loadImagenPaginacion(posicion) {
+            $(function () {
+                $("#contenido").load("/Zapatillas/_ImagenesZapatillaPartial?posicion="
+                    + posicion + "&idzapatilla=" + @zapatilla.IdProducto);
+            });
+        }
+
+        loadImagenPaginacion(1);
+    </script>
+}

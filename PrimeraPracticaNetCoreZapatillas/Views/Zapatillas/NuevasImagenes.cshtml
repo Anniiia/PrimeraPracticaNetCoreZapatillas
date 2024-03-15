@@ -1,0 +1,38 @@
+﻿@model List<Zapatilla>
+
+
+    <h1>Nuevas Imagenes Zapatillas</h1>
+
+    <button id="add" class="btn btn-warning">
+        Añadir nuevo campo Jquery
+    </button>
+
+    <form method="post" id="formulario">
+        <select class="form-control">
+            @foreach (Zapatilla zapa in Model)
+        {
+            <option name="zapatilla" value="@zapa.IdProducto">@zapa.Nombre</option>
+        }
+        </select>
+
+        <input type="text" name="imagen" class="form-control" />
+        <button class="btn btn-info">
+            Añadir imagenes POST
+        </button>
+
+    </form>
+
+
+@section Scripts {
+    <script>
+        function addInput() {
+            $(function () {
+                $("#add").click(function () {
+                    var nuevoinput = $('<input type="text" name="imagen"  class="form-control"/>')
+                });
+                $("#formulario").append(nuevoinput)
+            }
+                }
+    </script>
+}
+

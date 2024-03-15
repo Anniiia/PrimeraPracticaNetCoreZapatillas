@@ -1,0 +1,42 @@
+﻿@model Imagen
+@{
+    Zapatilla zapa = ViewData["ZAPATILLASELECCIONADA"] as Zapatilla;
+}
+
+
+@if ((int)@ViewData["ÚLTIMO"]!=0)
+{
+    <h3 class="mt-3">
+        Imagen @ViewData["POSICION"] de @ViewData["ÚLTIMO"]
+    </h3>
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item">
+            <button onclick="loadImagenPaginacion(1)" class="btn">
+                Primero
+            </button>
+        </li>
+        <li class="list-group-item">
+            <button onclick="loadImagenPaginacion(@ViewData["ANTERIOR"])" class="btn">
+                Anterior
+            </button>
+        </li>
+        <li class="list-group-item">
+            <button onclick="loadImagenPaginacion(@ViewData["SIGUIENTE"])" class="btn">
+                Siguiente
+            </button>
+        </li>
+        <li class="list-group-item">
+            <button onclick="loadImagenPaginacion(@ViewData["ÚLTIMO"])" class="btn">
+                Último
+            </button>
+        </li>
+    </ul>
+
+<div>
+    <img src="@Model.ImagenZapa" style="width:250px; height:250px" />
+</div>
+}
+else
+{
+    <h2>No existen registros para este departamento</h2>
+}

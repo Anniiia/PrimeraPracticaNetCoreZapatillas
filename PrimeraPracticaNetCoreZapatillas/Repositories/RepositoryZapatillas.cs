@@ -6,17 +6,16 @@ using PrimeraPracticaNetCoreZapatillas.Models;
 using System.Data;
 
 #region PROCEEDIMIENTOS ALMACENADOS
-
 //create procedure SP_ZAPATILLAS_OUT
 //(@posicion int, @idzapatilla int
 //, @registros int out)
 //as
 //select @registros = count(idproducto) from IMAGENESZAPASPRACTICA
 //where idproducto=@idzapatilla
-//select imagen from 
+//select idimagen, idproducto, imagen from 
 //    (select cast(
 //    ROW_NUMBER() OVER (ORDER BY idimagen) as int) AS POSICION
-//   , imagen
+//   , idimagen, idproducto, imagen
 //   from IMAGENESZAPASPRACTICA
 //    where idproducto=@idzapatilla) as QUERY
 //    where QUERY.POSICION >= @posicion
@@ -56,19 +55,20 @@ namespace PrimeraPracticaNetCoreZapatillas.Repositories
                 + " @registros out";
             SqlParameter pamPosicion = new SqlParameter("@posicion", posicion);
             SqlParameter pamZapatilla =
-                new SqlParameter("@departamento", idzapatilla);
+                new SqlParameter("@idzapatilla", idzapatilla);
             SqlParameter pamRegistros = new SqlParameter("@registros", -1);
             pamRegistros.Direction = ParameterDirection.Output;
             var consulta =
-                this.context.Zapatillas.FromSqlRaw
+                this.context.Imagenes.FromSqlRaw
                 (sql, pamPosicion, pamZapatilla, pamRegistros);
             var datos = await consulta.ToListAsync();
-            Zapatilla zapatilla = datos.FirstOrDefault();
+            Imagen imagen = datos.FirstOrDefault();
             int registros = (int)pamRegistros.Value;
             return new ModelPaginacionZapatillas
             {
                 NumeroRegistros = registros,
-                Zapatilla = zapatilla
+                ImagenZap = imagen
+                
             };
         }
 

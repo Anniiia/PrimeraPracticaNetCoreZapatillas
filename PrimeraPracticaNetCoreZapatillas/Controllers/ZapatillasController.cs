@@ -18,23 +18,56 @@ namespace PrimeraPracticaNetCoreZapatillas.Controllers
             return View(zapatillas);
         }
 
-        public async Task<IActionResult> Details(int idzapatilla)
+        public async Task<IActionResult> Details(int? posicion,int idzapatilla)
         {
-            Zapatilla zapatilla = await this.repo.FindZapatillaAsync(idzapatilla);
 
-            return View(zapatilla);
+            if (posicion == null)
+            {
+                posicion = 1;
+            }
+            ModelPaginacionZapatillas model = await
+                this.repo.GetImagenesZapatillaAsync
+                (posicion.Value, idzapatilla);
+            //Zapatilla zapatilla =
+            //    await this.repo.FindDepartamentosAsync(idzapatilla);
+            Zapatilla zapatilla = await this.repo.FindZapatillaAsync(idzapatilla);
+            ViewData["ZAPATILLASELECCIONADA"] = zapatilla;
+            ViewData["REGISTROS"] = model.NumeroRegistros;
+            ViewData["ZAPATILLA"] = idzapatilla;
+            int siguiente = posicion.Value + 1;
+            //DEBEMOS COMPROBAR QUE NO PASAMOS DEL NUMERO DE REGISTROS
+            if (siguiente > model.NumeroRegistros)
+            {
+                //EFECTO OPTICO
+                siguiente = model.NumeroRegistros;
+            }
+            int anterior = posicion.Value - 1;
+            if (anterior < 1)
+            {
+                anterior = 1;
+            }
+            ViewData["ULTIMO"] = model.NumeroRegistros;
+            ViewData["SIGUIENTE"] = siguiente;
+            ViewData["ANTERIOR"] = anterior;
+            ViewData["POSICION"] = posicion;
+            
+
+            return View(model.Zapatilla);
         }
 
-        public async Task<IActionResult> _EmpleadosDepartamentoPartial(int? posicion, int iddepartamento)
+        
+
+
+        public async Task<IActionResult> _ImagenesZapatillaPartial(int? posicion, int idzapatilla)
         {
             if (posicion == null)
             {
                 posicion = 1;
             }
-            ModelPaginacionDepartamentosEmpleados model =
-                await this.repo.GetEmpleadoDepartamentoAsync
-                (posicion.Value, iddepartamento);
-            int numeroRegistros = model.NumeroRegistrosEmpleados;
+            ModelPaginacionZapatillas model =
+                await this.repo.GetImagenesZapatillaAsync
+                (posicion.Value, idzapatilla);
+            int numeroRegistros = model.NumeroRegistros;
             int siguiente = posicion.Value + 1;
             if (siguiente > numeroRegistros)
             {
@@ -48,44 +81,16 @@ namespace PrimeraPracticaNetCoreZapatillas.Controllers
             ViewData["ÚLTIMO"] = numeroRegistros;
             ViewData["SIGUIENTE"] = siguiente;
             ViewData["ANTERIOR"] = anterior;
-            ViewData["DEPART"] = model.Departamento;
+            ViewData["ZAPATILLASELECCIONADA"] = model.Zapatilla;
             ViewData["POSICION"] = posicion;
-            return PartialView("_EmpleadosDepartamentoPartial", model.Empleado);
+            return PartialView("_ImagenesZapatillaPartial", model.ImagenZap);
         }
 
-        public async Task<IActionResult> EmpleadosDepartamentoOut
-        (int? posicion, int iddepartamento)
+        public async Task<IActionResult> NuevasImagenes()
         {
-            if (posicion == null)
-            {
-                //POSICION PARA EL EMPLEADO
-                posicion = 1;
-            }
-            ModelPaginacionDepartamentosEmpleados model = await
-                this.repo.GetEmpleadoDepartamentoAsync
-                (posicion.Value, iddepartamento);
-            Departamento departamento =
-                await this.repo.FindDepartamentosAsync(iddepartamento);
-            ViewData["DEPARTAMENTOSELECCIONADO"] = departamento;
-            ViewData["REGISTROS"] = model.NumeroRegistrosEmpleados;
-            ViewData["DEPARTAMENTO"] = iddepartamento;
-            int siguiente = posicion.Value + 1;
-            //DEBEMOS COMPROBAR QUE NO PASAMOS DEL NUMERO DE REGISTROS
-            if (siguiente > model.NumeroRegistrosEmpleados)
-            {
-                //EFECTO OPTICO
-                siguiente = model.NumeroRegistrosEmpleados;
-            }
-            int anterior = posicion.Value - 1;
-            if (anterior < 1)
-            {
-                anterior = 1;
-            }
-            ViewData["ULTIMO"] = model.NumeroRegistrosEmpleados;
-            ViewData["SIGUIENTE"] = siguiente;
-            ViewData["ANTERIOR"] = anterior;
-            ViewData["POSICION"] = posicion;
-            return View(model.Empleado);
+
+            List<Zapatilla> zapatillas = await this.repo.GetZapatillasAsync();
+            return View(zapatillas);
         }
     }
 }
