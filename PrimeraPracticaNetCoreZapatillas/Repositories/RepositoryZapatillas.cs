@@ -23,6 +23,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 //    where QUERY.POSICION >= @posicion
 //go
 
+
 //declare @registros int 
 //set @registros = 0
 //exec SP_ZAPATILLAS_OUT 1,1, @registros out
